@@ -15,7 +15,7 @@ class AppointmentController extends Controller
     {
         $appointments = $request->user()->appointments()
             ->orderBy('appointment_date', 'desc')
-            ->get();
+            ->paginate(20);
 
         return response()->json($appointments);
     }

@@ -15,7 +15,9 @@ const Dashboard = () => {
   const fetchAppointments = async () => {
     try {
       const response = await api.get('/appointments');
-      setAppointments(response.data);
+      // Handle both paginated and non-paginated responses
+      const data = response.data.data || response.data;
+      setAppointments(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching appointments:', error);
     } finally {
