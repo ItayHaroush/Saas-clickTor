@@ -1,59 +1,186 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ClickTor - Multi-tenant SaaS Starter
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern multi-tenant SaaS appointment management system with Laravel 11 API backend and React frontend with Hebrew RTL support.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 🔐 Secure authentication (Laravel Sanctum)
+- 👥 Multi-tenant architecture - each user is isolated
+- 📅 Full CRUD for appointments
+- 🌍 Hebrew RTL interface
+- 🎨 Modern, responsive UI
+- 🔒 Tenant data isolation
+- 📱 Mobile-friendly
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Backend
+- Laravel 11
+- MySQL
+- Laravel Sanctum (API Authentication)
+- RESTful API
 
-## Learning Laravel
+### Frontend
+- React 18
+- Vite
+- React Router
+- Axios
+- RTL (Right-to-Left) Support
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Prerequisites
+- PHP 8.2+
+- Composer
+- MySQL
+- Node.js 18+
+- npm
 
-## Laravel Sponsors
+### Backend Setup
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. Clone the repository:
+```bash
+git clone https://github.com/ItayHaroush/Saas-clickTor.git
+cd Saas-clickTor
+```
 
-### Premium Partners
+2. Install PHP dependencies:
+```bash
+composer install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+3. Configure environment:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Contributing
+4. Update `.env` with your MySQL credentials:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=clicktor_saas
+DB_USERNAME=root
+DB_PASSWORD=your_password
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. Create the database:
+```bash
+mysql -u root -p
+CREATE DATABASE clicktor_saas;
+exit;
+```
 
-## Code of Conduct
+6. Run migrations:
+```bash
+php artisan migrate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7. Start the Laravel development server:
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+The API will be available at `http://localhost:8000`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Frontend Setup
+
+1. Navigate to the client directory:
+```bash
+cd client
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`
+
+## API Endpoints
+
+### Authentication
+- `POST /api/register` - Register new user
+- `POST /api/login` - Login user
+- `POST /api/logout` - Logout user (requires auth)
+- `GET /api/me` - Get current user (requires auth)
+
+### Appointments (all require authentication)
+- `GET /api/appointments` - List user's appointments
+- `POST /api/appointments` - Create new appointment
+- `GET /api/appointments/{id}` - Get specific appointment
+- `PUT /api/appointments/{id}` - Update appointment
+- `DELETE /api/appointments/{id}` - Delete appointment
+
+## Usage
+
+1. Open `http://localhost:5173` in your browser
+2. Register a new account (Hebrew interface)
+3. Login with your credentials
+4. Create, view, edit, and delete appointments
+5. Each user can only see and manage their own appointments (tenant isolation)
+
+## Project Structure
+
+```
+.
+├── app/
+│   ├── Http/Controllers/Api/
+│   │   ├── AuthController.php
+│   │   └── AppointmentController.php
+│   └── Models/
+│       ├── User.php
+│       └── Appointment.php
+├── client/
+│   └── src/
+│       ├── components/
+│       │   ├── AppointmentForm.jsx
+│       │   └── ProtectedRoute.jsx
+│       ├── contexts/
+│       │   └── AuthContext.jsx
+│       ├── pages/
+│       │   ├── Login.jsx
+│       │   ├── Register.jsx
+│       │   └── Dashboard.jsx
+│       └── services/
+│           └── api.js
+├── database/
+│   └── migrations/
+└── routes/
+    └── api.php
+```
+
+## Security Features
+
+- Password hashing with bcrypt
+- API token authentication (Sanctum)
+- CSRF protection
+- Data isolation per tenant
+- Protected routes
+- Input validation
+
+## Development
+
+### Running Tests
+```bash
+php artisan test
+```
+
+### Code Style
+```bash
+./vendor/bin/pint
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Open source - MIT License
+
+## Support
+
+For issues or questions, please open an issue on GitHub.
